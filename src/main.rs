@@ -1,5 +1,12 @@
 use clap::Parser;
-use std::{fs::read_to_string, path::PathBuf};
+use std::{
+    fs::read_to_string,
+    io::{stdout, Write},
+    path::PathBuf,
+};
+
+#[cfg(test)]
+mod test;
 
 #[derive(Parser)]
 struct Args {
@@ -7,7 +14,11 @@ struct Args {
 }
 
 fn main() {
-    read_to_string(Args::parse().input)
+    assemble(Args::parse().input);
+}
+
+fn assemble(input: PathBuf) {
+    read_to_string(input)
         .unwrap()
         .lines()
         .map(str::trim)
@@ -54,6 +65,8 @@ fn main() {
 
             print!(" ");
         });
+
+    stdout().flush().unwrap();
 }
 
 fn im_to_u4(im: &str) -> u8 {
